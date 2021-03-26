@@ -17,4 +17,5 @@ export declare function pathIsLocked(path: string): boolean;
 export declare function pathIsOk(path: string): boolean;
 export declare function pathExists(path: string, followSymLinks?: boolean): boolean;
 export declare function safeStat(path: string, followSymLinks?: boolean): fs.Stats | undefined;
+export declare function setTimer(millis: number, message?: string): ReturnType<typeof setTimeout>;
 export declare function sleep(millis: number): void;

@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
-import * as github from '@actions/github'
 import * as fs from 'fs'
+import * as github from '@actions/github'
 
 export const gitRefRegex = /^refs\/(:?heads|tags)\//
 
@@ -106,6 +106,13 @@ export function safeStat(path: string, followSymLinks = true): fs.Stats | undefi
 
     throw error
   }
+}
+
+export function setTimer(millis: number, message?: string): ReturnType<typeof setTimeout> {
+  return setTimeout(function () {
+    core.setFailed(message ? message : 'Timer expired, aborting')
+    process.exit(1)
+  }, millis)
 }
 
 export function sleep(millis: number): void {
