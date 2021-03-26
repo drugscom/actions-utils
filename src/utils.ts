@@ -110,7 +110,7 @@ export function safeStat(path: string, followSymLinks = true): fs.Stats | undefi
 
 export function setTimer(millis: number, message?: string): ReturnType<typeof setTimeout> {
   return setTimeout(function () {
-    core.setFailed(message ? message : 'Timer expired, aborting')
+    core.setFailed(message ?? 'Timer expired, aborting')
     process.exit(1)
   }, millis)
 }
