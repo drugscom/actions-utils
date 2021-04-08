@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import * as fs from 'fs'
+import * as fspath from 'path'
 import * as github from '@actions/github'
 
 export const gitRefRegex = /^refs\/(:?heads|tags)\//
@@ -56,6 +57,11 @@ export function getPathLock(path: string): (() => void) | undefined {
     return undefined
   }
 
+  const parentDir = fspath.dirname(path)
+  if (!pathExists(parentDir)) {
+    fs.mkdirSync(parentDir, {recursive: true})
+  }
+
   fs.openSync(lockFile, 'w')
 
   return function () {
@@ -76,6 +82,11 @@ export function gitEventIsPushTag(): boolean {
 }
 
 export function okPath(path: string): void {
+  const parentDir = fspath.dirname(path)
+  if (!pathExists(parentDir)) {
+    fs.mkdirSync(parentDir, {recursive: true})
+  }
+
   fs.openSync(`${path}.ok`, 'w')
 }
 
