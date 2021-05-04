@@ -139,14 +139,15 @@ export async function waitForPathLock(path: string, millis: number): Promise<voi
     }
 
     const timer = setTimeout(function () {
+      watcher.close()
       reject(new Error(`ETOUT: Timed out waiting for lock on cache file ${path}`))
     }, millis)
 
-    const fileWatcher = fs.watch(path, function (eventType) {
+    const watcher = fs.watch(path, function (eventType) {
       if (eventType === 'rename') {
         if (!pathIsLocked(path)) {
           clearTimeout(timer)
-          fileWatcher.close()
+          watcher.close()
           resolve()
         }
       }
