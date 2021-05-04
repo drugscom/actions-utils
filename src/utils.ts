@@ -131,3 +131,26 @@ export function sleep(millis: number): void {
   // eslint-disable-next-line no-empty
   while (new Date() <= limit) {}
 }
+
+export async function waitForPathLock(path: string, millis: number): Promise<void> {
+  return new Promise(function (resolve, reject) {
+    if (!pathIsLocked(path)) {
+      resolve()
+    }
+
+    const timer = setTimeout(function () {
+      watcher.close()
+      reject(new Error(`ETOUT: Timed out waiting for lock on cache file ${path}`))
+    }, millis)
+
+    const watcher = fs.watch(path, function (eventType) {
+      if (eventType === 'rename') {
+        if (!pathIsLocked(path)) {
+          clearTimeout(timer)
+          watcher.close()
+          resolve()
+        }
+      }
+    })
+  })
+}
