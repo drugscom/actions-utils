@@ -134,23 +134,25 @@ export function sleep(millis: number): void {
 
 export async function waitForPathLock(path: string, millis: number): Promise<void> {
   return new Promise(function (resolve, reject) {
-    if (!pathIsLocked(path)) {
-      resolve()
-    }
-
-    const timer = setTimeout(function () {
-      watcher.close()
-      reject(new Error(`ETOUT: Timed out waiting for lock on cache file ${path}`))
+    const timeout = setTimeout(function () {
+      clearTimeout(timeout)
+      clearInterval(interval)
+      reject(new Error(`ETOUT: Timed out waiting for lock on path "${path}"`))
     }, millis)
 
-    const watcher = fs.watch(path, function (eventType) {
-      if (eventType === 'rename') {
-        if (!pathIsLocked(path)) {
-          clearTimeout(timer)
-          watcher.close()
-          resolve()
-        }
+    const interval = setInterval(function () {
+      if (!pathIsLocked(path)) {
+        clearTimeout(timeout)
+        clearInterval(interval)
+        resolve()
       }
-    })
+      core.debug(`Waiting for lock on path "${path}"`)
+    }, 1000)
+
+    if (!pathIsLocked(path)) {
+      clearTimeout(timeout)
+      clearInterval(interval)
+      resolve()
+    }
   })
 }
