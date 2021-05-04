@@ -1,6 +1,6 @@
 {
   "name": "@actions/utils",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Functions shared between Github actions",
   "main": "lib/utils.js",
   "types": "lib/utils.d.ts",
