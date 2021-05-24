@@ -43,7 +43,7 @@ export function getInputAsArray(name: string, options?: core.InputOptions): stri
 }
 
 export function getInputAsBool(name: string, options?: core.InputOptions): boolean {
-  return core.getInput(name, options).trim().toUpperCase() === 'TRUE'
+  return core.getBooleanInput(name, options)
 }
 
 export function getInputAsString(name: string, options?: core.InputOptions): string {
