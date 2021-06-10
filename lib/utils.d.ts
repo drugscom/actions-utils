@@ -7,6 +7,9 @@ export declare function fileExist(path: string, followSymLinks?: boolean): boole
 export declare function getGitRef(): string;
 export declare function getInputAsArray(name: string, options?: core.InputOptions): string[];
 export declare function getInputAsBool(name: string, options?: core.InputOptions): boolean;
+/**
+ * @deprecated Just use core.getInput() instead
+ */
 export declare function getInputAsString(name: string, options?: core.InputOptions): string;
 export declare function getPathLock(path: string): (() => void) | undefined;
 export declare function gitBranchIsLatest(latestName?: string): boolean;

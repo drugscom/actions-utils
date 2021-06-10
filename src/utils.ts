@@ -31,8 +31,7 @@ export function getGitRef(): string {
 
 export function getInputAsArray(name: string, options?: core.InputOptions): string[] {
   return core
-    .getInput(name, options)
-    .split('\n')
+    .getMultilineInput(name, options)
     .map(x =>
       x
         .split(',')
@@ -46,8 +45,11 @@ export function getInputAsBool(name: string, options?: core.InputOptions): boole
   return core.getBooleanInput(name, options)
 }
 
+/**
+ * @deprecated Just use core.getInput() instead
+ */
 export function getInputAsString(name: string, options?: core.InputOptions): string {
-  return core.getInput(name, options).trim()
+  return core.getInput(name, options)
 }
 
 export function getPathLock(path: string): (() => void) | undefined {
