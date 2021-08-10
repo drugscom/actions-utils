@@ -41,6 +41,9 @@ export function getInputAsArray(name: string, options?: core.InputOptions): stri
     .flat()
 }
 
+/**
+ * @deprecated Just use core.getBooleanInput() instead
+ */
 export function getInputAsBool(name: string, options?: core.InputOptions): boolean {
   return core.getBooleanInput(name, options)
 }
