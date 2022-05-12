@@ -4,21 +4,33 @@ import * as fspath from 'path'
 import * as github from '@actions/github'
 
 export const gitRefRegex = /^refs\/(:?heads|tags)\//
+export const gitRefHeadRegex = /^refs\/heads\//
+export const gitRefTagRegex = /^refs\/tags\//
 
 export function directoryExist(path: string, followSymLinks = true): boolean {
-  return (
-    pathExists(path, followSymLinks) &&
-    // @ts-ignore
-    safeStat(path, followSymLinks).isDirectory()
-  )
+  if (!pathExists(path, followSymLinks)) {
+    return false
+  }
+
+  const pathStat = safeStat(path, followSymLinks)
+  if (!pathStat) {
+    return false
+  }
+
+  return pathStat.isDirectory()
 }
 
 export function fileExist(path: string, followSymLinks = true): boolean {
-  return (
-    pathExists(path, followSymLinks) &&
-    // @ts-ignore
-    (safeStat(path, followSymLinks).isFile() || safeStat(path, followSymLinks).isSymbolicLink())
-  )
+  if (!pathExists(path, followSymLinks)) {
+    return false
+  }
+
+  const pathStat = safeStat(path, followSymLinks)
+  if (!pathStat) {
+    return false
+  }
+
+  return pathStat.isFile() || pathStat.isSymbolicLink()
 }
 
 export function getGitRef(): string {
@@ -79,11 +91,11 @@ export function gitBranchIsLatest(latestName = 'master'): boolean {
 }
 
 export function gitEventIsPushHead(): boolean {
-  return github.context.eventName === 'push' && !!github.context.ref.match(/^refs\/heads\//)
+  return github.context.eventName === 'push' && !github.context.ref.startsWith('refs/heads/')
 }
 
 export function gitEventIsPushTag(): boolean {
-  return github.context.eventName === 'push' && !!github.context.ref.match(/^refs\/tags\//)
+  return github.context.eventName === 'push' && !github.context.ref.startsWith('refs/tags/')
 }
 
 export function okPath(path: string): void {
@@ -116,6 +128,7 @@ export function safeStat(path: string, followSymLinks = true): fs.Stats | undefi
   try {
     return statFunc(path)
   } catch (error) {
+    // @ts-ignore
     if (error.code === 'ENOENT') {
       return undefined
     }
