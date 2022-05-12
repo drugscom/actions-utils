@@ -128,6 +128,7 @@ export function safeStat(path: string, followSymLinks = true): fs.Stats | undefi
   try {
     return statFunc(path)
   } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (error.code === 'ENOENT') {
       return undefined
