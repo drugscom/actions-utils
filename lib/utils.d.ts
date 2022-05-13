@@ -2,10 +2,15 @@
 import * as core from '@actions/core';
 import * as fs from 'fs';
 export declare const gitRefRegex: RegExp;
+export declare const gitRefHeadRegex: RegExp;
+export declare const gitRefTagRegex: RegExp;
 export declare function directoryExist(path: string, followSymLinks?: boolean): boolean;
 export declare function fileExist(path: string, followSymLinks?: boolean): boolean;
 export declare function getGitRef(): string;
 export declare function getInputAsArray(name: string, options?: core.InputOptions): string[];
+/**
+ * @deprecated Just use core.getBooleanInput() instead
+ */
 export declare function getInputAsBool(name: string, options?: core.InputOptions): boolean;
 /**
  * @deprecated Just use core.getInput() instead
