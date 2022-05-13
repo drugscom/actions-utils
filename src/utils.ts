@@ -91,11 +91,11 @@ export function gitBranchIsLatest(latestName = 'master'): boolean {
 }
 
 export function gitEventIsPushHead(): boolean {
-  return github.context.eventName === 'push' && !github.context.ref.startsWith('refs/heads/')
+  return github.context.eventName === 'push' && github.context.ref.startsWith('refs/heads/')
 }
 
 export function gitEventIsPushTag(): boolean {
-  return github.context.eventName === 'push' && !github.context.ref.startsWith('refs/tags/')
+  return github.context.eventName === 'push' && github.context.ref.startsWith('refs/tags/')
 }
 
 export function okPath(path: string): void {
