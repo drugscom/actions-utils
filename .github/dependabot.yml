@@ -2,11 +2,15 @@
 version: 2
 
 updates:
-  - package-ecosystem: npm
+  - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: daily
     reviewers:
       - drugscom/ops
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: daily
     allow:
       - dependency-type: production
